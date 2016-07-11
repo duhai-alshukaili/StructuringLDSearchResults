@@ -1,1 +1,1 @@
-# StructuringLDSearchResults
+# Structuring LD Search Results Using PSLThis repository contains code and pointers to data to enable you to re-create the results from  Structuring LD Search Results experiments in our paper.
