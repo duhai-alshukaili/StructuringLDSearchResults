@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [ "$#" -ne 1 ] || ! [ -d "$1" ]; then
+    echo "Usage: $0 COLLECTION_DIR" >&2
+    exit 1
+fi
+
+#dbfiles=$(ls *.db 2> /dev/null | wc -l)
+#if [[ "$dbfiles" != "0" ]]; then
+#    rm -fr *.db
+#fi
+
+rm /media/black/*.db
+
+java -Xmx4096m -cp ./target/classes:`cat classpath.out` com.wordpress.chapter10.LoadData $1
+
+for i in `seq 0 4`;
+do
+    java -Xmx20480m -cp ./target/classes:`cat classpath.out` com.wordpress.chapter10.learn.FullMPELearn $i $1 'terminal' 
+done
+
+#java -Xmx16384m -cp ./target/classes:`cat classpath.out` com.wordpress.chapter10.learn.Learn 0 $1 'terminal' 
+#java -Xmx16384m -cp ./target/classes:`cat classpath.out` com.wordpress.chapter10.learn.Learn 2 $1 'terminal' 

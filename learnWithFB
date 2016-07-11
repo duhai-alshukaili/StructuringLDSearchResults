@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# note this requires RDFIsInstanceOf.csv results
+# so run at least level 0 inference before running this script.
+################################################################
+
+if [ "$#" -ne 1 ] || ! [ -d "$1" ]; then
+    echo "Usage: $0 COLLECTION_DIR" >&2
+    exit 1
+fi
+
+rm /media/black/*.db
+
+
+java -Xmx16384m -cp ./target/classes:`cat classpath.out` \
+        com.wordpress.chapter10.learn.RunFBWLearn $1
+

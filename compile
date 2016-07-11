@@ -1,0 +1,12 @@
+#!/bin/bash
+
+mvn compile
+mvn dependency:build-classpath -Dmdep.outputFile=classpath.out
+#mvn package
+
+
+#mvn clean compile assembly:single
+
+#./copylib.sh
+
+#cp target/LDPayGo2-0.0.1-SNAPSHOT.jar lib

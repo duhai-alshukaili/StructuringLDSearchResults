@@ -1,0 +1,26 @@
+#!/bin/bash
+
+datasets=( "movies" "cities" "people")
+
+for d in "${datasets[@]}" 
+do
+
+	echo "Baseline Inference on $d dataset"
+
+	rm /media/black/*.db
+
+	rm data/$d/feedback/*.csv
+	
+	rm data/$d/output/*.csv
+
+
+
+	java -Xmx4096m -cp ./target/classes:`cat classpath.out` com.wordpress.chapter10.LoadData data/$d
+
+
+	for i in `seq 0 4`;
+	do
+	    java -Xmx23552m -cp ./target/classes:`cat classpath.out` com.wordpress.chapter10.infer.Infer $i data/$d 'terminal'
+	done
+
+done

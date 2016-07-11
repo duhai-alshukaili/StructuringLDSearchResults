@@ -1,0 +1,35 @@
+#!/bin/bash
+
+datasets=( "movies" "cities" "people")
+
+for d in "${datasets[@]}" 
+do
+
+	rm /media/black/*.db
+
+    # delete old feedback
+    rm data/$d/feedback/*.csv
+    
+	# generate feedback
+	python generateFB.py data/$d/output/ data/$d/feedback
+
+	rm data/$d/output/*.csv
+
+
+	java -Xmx4096m -cp ./target/classes:`cat classpath.out` com.wordpress.chapter10.LoadData data/$d
+
+
+	for x in `ls data/$d/ont/*.csv`; 
+	do 
+		#echo $x;
+		java -Xmx4096m -cp ./target/classes:`cat classpath.out` com.wordpress.chapter10.LoadOntData data/$d $x
+	done
+
+
+	for i in `seq 0 4`;
+	do
+	    java -Xmx16384m -cp ./target/classes:`cat classpath.out` com.wordpress.chapter10.infer.Infer $i data/$d 'terminal'
+	done
+
+
+done

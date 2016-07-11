@@ -1,0 +1,29 @@
+#!/bin/bash
+
+datasets=( "movies" "cities" "people")
+predicates=( "Entity" "Property" "EntityType"  "HasType"  "HasProperty" "SimProperty" "SimEntity" "SimEntityType")
+
+for i in "${datasets[@]}" 
+do
+
+    java -Xmx4096m -cp ./target/classes:`cat classpath.out`  \
+        com.wordpress.chapter10.evaluation.ResultPrinter data/$i/output data/$i/gt
+done
+
+for ds in "${datasets[@]}" 
+do
+
+    echo '-------------------' >> $ds.out
+	
+    for pred in "${predicates[@]}" 
+	do
+	
+	  fileName=data/$ds/output/$pred\_result.csv
+	  iterName=$ds\_$pred
+	  
+	  python auc.py $fileName $iterName >> $ds.out
+	done
+
+done
+
+
